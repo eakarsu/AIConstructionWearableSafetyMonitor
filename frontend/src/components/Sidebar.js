@@ -26,6 +26,23 @@ const navItems = [
   { path: '/emergency', label: 'Emergency Response', icon: '\u{1F6A8}' },
   { section: 'AI Tools' },
   { path: '/ai-center', label: 'AI Center', icon: '\u{1F916}' },
+  { path: '/advanced', label: 'Advanced Suite', icon: '\u{1F680}' },
+,
+  // // === Batch 02 Gaps & Frontend Mounts ===
+  { path: '/cf/multi-modal-fatigue-detection', icon: '+', label: 'CF: MultiModalFatigueDetecti' },
+  { path: '/cf/predictive-injury-prevention', icon: '+', label: 'CF: PredictiveInjuryPreventi' },
+  { path: '/cf/autonomous-safety-audits', icon: '+', label: 'CF: AutonomousSafetyAudits' },
+  { path: '/cf/behavior-based-safety-bbs-coaching', icon: '+', label: 'CF: BehaviorBasedSafetyBbsCo' },
+  { path: '/cf/worker-cohort-analysis', icon: '+', label: 'CF: WorkerCohortAnalysis' },
+  { path: '/cf/insurance-premium-optimization', icon: '+', label: 'CF: InsurancePremiumOptimiza' },
+  { path: '/gap/proximity-falls-lack-dedicated-ai-endpoints-for-collision-pr', icon: '+', label: 'Gap: ProximityFallsLackDedica' },
+  { path: '/gap/maintenance-lacks-predictive-maintenance-scheduling-ai', icon: '+', label: 'Gap: MaintenanceLacksPredicti' },
+  { path: '/gap/hazards-ppe-lack-ai-risk-scoring', icon: '+', label: 'Gap: HazardsPpeLackAiRiskScor' },
+  { path: '/gap/limited-integration-with-wearable-apis-apple-watch-fitbit-ou', icon: '+', label: 'Gap: LimitedIntegrationWithWe' },
+  { path: '/gap/no-geofenced-site-map-management', icon: '+', label: 'Gap: NoGeofencedSiteMapManage' },
+  { path: '/gap/no-insurance-liability-tracking-or-claims-module', icon: '+', label: 'Gap: NoInsuranceLiabilityTrac' },
+  { path: '/gap/no-webhooks-for-sensor-pushes', icon: '+', label: 'Gap: NoWebhooksForSensorPushe' },
+  { path: '/gap/no-payment-billing-module', icon: '+', label: 'Gap: NoPaymentBillingModule' }
 ];
 
 function Sidebar() {
