@@ -2,6 +2,7 @@ const router = require('express').Router();
 const pool = require('../db');
 const auth = require('../middleware/auth');
 const axios = require('axios');
+const { sendSafetyAlert } = require('../services/alertService');
 
 const callOpenRouter = async (systemPrompt, userMessage) => {
   const response = await axios.post('https://openrouter.ai/api/v1/chat/completions', {
@@ -38,14 +39,40 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
+// POST — with validation + alert on critical heat stress
 router.post('/', auth, async (req, res) => {
   try {
     const { worker_name, zone, body_temp, ambient_temp, humidity, wbgt_index, hydration_level, work_rest_ratio, status, ai_recommendation } = req.body;
+
+    if (!worker_name || typeof worker_name !== 'string' || worker_name.trim() === '') {
+      return res.status(400).json({ error: 'worker_name is required' });
+    }
+    if (body_temp !== undefined && (isNaN(body_temp) || body_temp < 90 || body_temp > 115)) {
+      return res.status(400).json({ error: 'body_temp must be a number between 90 and 115 (°F)' });
+    }
+    if (humidity !== undefined && (isNaN(humidity) || humidity < 0 || humidity > 100)) {
+      return res.status(400).json({ error: 'humidity must be between 0 and 100' });
+    }
+
     const result = await pool.query(
       'INSERT INTO heatstress (worker_name, zone, body_temp, ambient_temp, humidity, wbgt_index, hydration_level, work_rest_ratio, status, ai_recommendation) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *',
-      [worker_name, zone, body_temp, ambient_temp, humidity, wbgt_index, hydration_level, work_rest_ratio, status, ai_recommendation]
+      [worker_name.trim(), zone, body_temp, ambient_temp, humidity, wbgt_index, hydration_level, work_rest_ratio, status, ai_recommendation]
     );
-    res.status(201).json(result.rows[0]);
+
+    const record = result.rows[0];
+
+    // Alert on critical heat stress (status critical or body_temp >= 104°F)
+    if (status === 'critical' || (body_temp && parseFloat(body_temp) >= 104)) {
+      setImmediate(() => {
+        sendSafetyAlert(
+          worker_name,
+          'heat_stress_critical',
+          `Critical heat stress detected for ${worker_name} in Zone ${zone || 'N/A'}. Body Temp: ${body_temp}°F, Ambient: ${ambient_temp}°F, Humidity: ${humidity}%, WBGT: ${wbgt_index}. Immediate intervention required.`
+        ).catch(e => console.error('[alertService] heatstress alert error:', e.message));
+      });
+    }
+
+    res.status(201).json(record);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

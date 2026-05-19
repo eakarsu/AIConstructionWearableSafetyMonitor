@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const auth = require('../middleware/auth');
 const axios = require('axios');
+const { aiRateLimiter } = require('../middleware/rateLimiter');
 
 const callOpenRouter = async (systemPrompt, userMessage) => {
   const response = await axios.post('https://openrouter.ai/api/v1/chat/completions', {
@@ -19,7 +20,7 @@ const callOpenRouter = async (systemPrompt, userMessage) => {
 };
 
 // Safety Analysis
-router.post('/safety-analysis', auth, async (req, res) => {
+router.post('/safety-analysis', auth, aiRateLimiter, async (req, res) => {
   try {
     const { data } = req.body;
     const analysis = await callOpenRouter(
@@ -33,7 +34,7 @@ router.post('/safety-analysis', auth, async (req, res) => {
 });
 
 // Risk Prediction
-router.post('/risk-prediction', auth, async (req, res) => {
+router.post('/risk-prediction', auth, aiRateLimiter, async (req, res) => {
   try {
     const { data } = req.body;
     const analysis = await callOpenRouter(
@@ -47,7 +48,7 @@ router.post('/risk-prediction', auth, async (req, res) => {
 });
 
 // Incident Analysis
-router.post('/incident-analysis', auth, async (req, res) => {
+router.post('/incident-analysis', auth, aiRateLimiter, async (req, res) => {
   try {
     const { data } = req.body;
     const analysis = await callOpenRouter(
@@ -61,7 +62,7 @@ router.post('/incident-analysis', auth, async (req, res) => {
 });
 
 // Equipment Health
-router.post('/equipment-health', auth, async (req, res) => {
+router.post('/equipment-health', auth, aiRateLimiter, async (req, res) => {
   try {
     const { data } = req.body;
     const analysis = await callOpenRouter(
@@ -75,7 +76,7 @@ router.post('/equipment-health', auth, async (req, res) => {
 });
 
 // Worker Wellness
-router.post('/worker-wellness', auth, async (req, res) => {
+router.post('/worker-wellness', auth, aiRateLimiter, async (req, res) => {
   try {
     const { data } = req.body;
     const analysis = await callOpenRouter(
@@ -89,7 +90,7 @@ router.post('/worker-wellness', auth, async (req, res) => {
 });
 
 // Environmental Risk
-router.post('/environmental-risk', auth, async (req, res) => {
+router.post('/environmental-risk', auth, aiRateLimiter, async (req, res) => {
   try {
     const { data } = req.body;
     const analysis = await callOpenRouter(
@@ -103,7 +104,7 @@ router.post('/environmental-risk', auth, async (req, res) => {
 });
 
 // Compliance Report
-router.post('/compliance-report', auth, async (req, res) => {
+router.post('/compliance-report', auth, aiRateLimiter, async (req, res) => {
   try {
     const { data } = req.body;
     const analysis = await callOpenRouter(
@@ -117,7 +118,7 @@ router.post('/compliance-report', auth, async (req, res) => {
 });
 
 // Emergency Plan
-router.post('/emergency-plan', auth, async (req, res) => {
+router.post('/emergency-plan', auth, aiRateLimiter, async (req, res) => {
   try {
     const { data } = req.body;
     const analysis = await callOpenRouter(
@@ -131,7 +132,7 @@ router.post('/emergency-plan', auth, async (req, res) => {
 });
 
 // Training Recommendations
-router.post('/training-recommend', auth, async (req, res) => {
+router.post('/training-recommend', auth, aiRateLimiter, async (req, res) => {
   try {
     const { data } = req.body;
     const analysis = await callOpenRouter(
@@ -145,7 +146,7 @@ router.post('/training-recommend', auth, async (req, res) => {
 });
 
 // Predictive Alerts
-router.post('/predictive-alert', auth, async (req, res) => {
+router.post('/predictive-alert', auth, aiRateLimiter, async (req, res) => {
   try {
     const { data } = req.body;
     const analysis = await callOpenRouter(
@@ -159,7 +160,7 @@ router.post('/predictive-alert', auth, async (req, res) => {
 });
 
 // General AI Chat
-router.post('/chat', auth, async (req, res) => {
+router.post('/chat', auth, aiRateLimiter, async (req, res) => {
   try {
     const { message } = req.body;
     if (!message) return res.status(400).json({ error: 'Message is required' });

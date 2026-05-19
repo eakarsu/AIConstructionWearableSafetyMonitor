@@ -99,6 +99,14 @@ function Dashboard() {
             color="green"
             onClick={() => navigate('/ai-center')}
           />
+          <StatCard
+            icon={'\u{1F680}'}
+            label="Advanced Suite"
+            value="8 New"
+            sub="Predictive analytics + OSHA scan"
+            color="blue"
+            onClick={() => navigate('/advanced')}
+          />
         </div>
 
         <div className="dashboard-section-title">

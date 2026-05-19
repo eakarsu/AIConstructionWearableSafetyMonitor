@@ -19,10 +19,23 @@ const callOpenRouter = async (systemPrompt, userMessage) => {
   return response.data.choices[0].message.content;
 };
 
+// GET all — with pagination (?page=1&limit=20)
 router.get('/', auth, async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM equipment ORDER BY created_at DESC');
-    res.json(result.rows);
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 20));
+    const offset = (page - 1) * limit;
+
+    const [dataResult, countResult] = await Promise.all([
+      pool.query('SELECT * FROM equipment ORDER BY created_at DESC LIMIT $1 OFFSET $2', [limit, offset]),
+      pool.query('SELECT COUNT(*) AS total FROM equipment')
+    ]);
+
+    const total = parseInt(countResult.rows[0].total);
+    res.json({
+      data: dataResult.rows,
+      pagination: { page, limit, total, total_pages: Math.ceil(total / limit) }
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -38,12 +51,21 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
+// POST — with input validation
 router.post('/', auth, async (req, res) => {
   try {
     const { name, type, serial_number, location, last_inspection, next_inspection, condition, inspector, status, ai_assessment } = req.body;
+
+    if (!name || typeof name !== 'string' || name.trim() === '') {
+      return res.status(400).json({ error: 'name is required' });
+    }
+    if (!type || typeof type !== 'string' || type.trim() === '') {
+      return res.status(400).json({ error: 'type is required' });
+    }
+
     const result = await pool.query(
       'INSERT INTO equipment (name, type, serial_number, location, last_inspection, next_inspection, condition, inspector, status, ai_assessment) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *',
-      [name, type, serial_number, location, last_inspection, next_inspection, condition, inspector, status, ai_assessment]
+      [name.trim(), type.trim(), serial_number, location, last_inspection, next_inspection, condition, inspector, status, ai_assessment]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
