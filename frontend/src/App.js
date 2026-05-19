@@ -23,6 +23,7 @@ import GapNoGeofencedSiteMapManagement from './pages/GapNoGeofencedSiteMapManage
 import GapNoInsuranceLiabilityTrackingOrClaimsModule from './pages/GapNoInsuranceLiabilityTrackingOrClaimsModule';
 import GapNoWebhooksForSensorPushes from './pages/GapNoWebhooksForSensorPushes';
 import GapNoPaymentBillingModule from './pages/GapNoPaymentBillingModule';
+import CustomViewsPage from './pages/CustomViewsPage';
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem('token');
@@ -432,6 +433,7 @@ function App() {
         ))}
         <Route path="/ai-center" element={<ProtectedRoute><AICenter /></ProtectedRoute>} />
         <Route path="/advanced" element={<ProtectedRoute><AdvancedFeatures /></ProtectedRoute>} />
+        <Route path="/custom-views" element={<ProtectedRoute><CustomViewsPage /></ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       
         {/* // === Batch 02 Gaps & Frontend Mounts === */}

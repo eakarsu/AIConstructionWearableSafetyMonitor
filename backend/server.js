@@ -61,6 +61,9 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Custom Views (Wearable Views) - mounted before any 404/fallback handlers
+app.use('/api/custom-views', require('./routes/customViews'));
+
 // Global error handler
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);

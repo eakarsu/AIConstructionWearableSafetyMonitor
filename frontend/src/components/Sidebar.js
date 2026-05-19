@@ -27,6 +27,8 @@ const navItems = [
   { section: 'AI Tools' },
   { path: '/ai-center', label: 'AI Center', icon: '\u{1F916}' },
   { path: '/advanced', label: 'Advanced Suite', icon: '\u{1F680}' },
+  { section: 'Custom Views' },
+  { path: '/custom-views', label: 'Wearable Views', icon: '\u{1F4CA}' },
 ,
   // // === Batch 02 Gaps & Frontend Mounts ===
   { path: '/cf/multi-modal-fatigue-detection', icon: '+', label: 'CF: MultiModalFatigueDetecti' },
