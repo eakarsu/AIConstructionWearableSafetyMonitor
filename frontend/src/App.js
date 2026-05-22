@@ -25,6 +25,11 @@ import GapNoWebhooksForSensorPushes from './pages/GapNoWebhooksForSensorPushes';
 import GapNoPaymentBillingModule from './pages/GapNoPaymentBillingModule';
 import CustomViewsPage from './pages/CustomViewsPage';
 
+import CodexCustomVizFeature from './pages/CodexCustomVizFeature';
+import CodexOperationsFeature from './pages/CodexOperationsFeature';
+
+import TimelineView from './pages/TimelineView';
+
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem('token');
   if (!token) return <Navigate to="/login" replace />;
@@ -387,6 +392,30 @@ const featureConfigs = {
       { key: 'ai_protocol', label: 'AI Protocol', type: 'textarea' },
     ],
   },
+  'evacuation-muster-trace': {
+    title: 'Evacuation Muster Trace',
+    icon: '\u{1F6A8}',
+    endpoint: 'evacuation-muster-trace',
+    columns: [
+      { key: 'drill_id', label: 'Drill ID' },
+      { key: 'zone', label: 'Zone' },
+      { key: 'assembly_point', label: 'Assembly Point' },
+      { key: 'workers_expected', label: 'Expected' },
+      { key: 'workers_confirmed', label: 'Confirmed' },
+      { key: 'missing_workers', label: 'Missing' },
+      { key: 'status', label: 'Status' },
+    ],
+    formFields: [
+      { key: 'drill_id', label: 'Drill ID', type: 'text', required: true },
+      { key: 'zone', label: 'Zone', type: 'text', required: true },
+      { key: 'assembly_point', label: 'Assembly Point', type: 'text' },
+      { key: 'workers_expected', label: 'Workers Expected', type: 'number' },
+      { key: 'workers_confirmed', label: 'Workers Confirmed', type: 'number' },
+      { key: 'missing_workers', label: 'Missing Workers', type: 'number' },
+      { key: 'response_time_min', label: 'Response Time Min', type: 'number' },
+      { key: 'status', label: 'Status', type: 'select', options: ['active', 'reconcile', 'complete'] },
+    ],
+  },
   maintenance: {
     title: 'Predictive Maintenance',
     icon: '\u{1F527}',
@@ -418,6 +447,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/insights/timeline" element={<ProtectedRoute><TimelineView /></ProtectedRoute>} />
+        <Route path="/codex/custom-viz" element={<ProtectedRoute><CodexCustomVizFeature /></ProtectedRoute>} />
+        <Route path="/codex/operations" element={<ProtectedRoute><CodexOperationsFeature /></ProtectedRoute>} />
+
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         {Object.entries(featureConfigs).map(([key, config]) => (

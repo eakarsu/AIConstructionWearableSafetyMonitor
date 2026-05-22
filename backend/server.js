@@ -26,6 +26,7 @@ app.use('/api/proximity', require('./routes/proximity'));
 app.use('/api/training', require('./routes/training'));
 app.use('/api/emergency', require('./routes/emergency'));
 app.use('/api/maintenance', require('./routes/maintenance'));
+app.use('/api/evacuation-muster-trace', require('./routes/evacuationMusterTrace'));
 app.use('/api/ai', require('./routes/ai'));
 
 // New AI endpoints (incident-prediction, ppe-compliance-scan, evacuation-plan)

@@ -24,6 +24,7 @@ const navItems = [
   { path: '/proximity', label: 'Proximity Alerts', icon: '\u{1F4E1}' },
   { path: '/training', label: 'Training Compliance', icon: '\u{1F393}' },
   { path: '/emergency', label: 'Emergency Response', icon: '\u{1F6A8}' },
+  { path: '/evacuation-muster-trace', label: 'Evacuation Muster', icon: '\u{1F6A8}' },
   { section: 'AI Tools' },
   { path: '/ai-center', label: 'AI Center', icon: '\u{1F916}' },
   { path: '/advanced', label: 'Advanced Suite', icon: '\u{1F680}' },
