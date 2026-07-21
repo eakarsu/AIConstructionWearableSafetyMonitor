@@ -7,11 +7,12 @@ const auth = require('../middleware/auth');
 // Register
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password } = req.body;
+    if (!name || !email || typeof password !== 'string' || password.length < 12) return res.status(400).json({ error: 'A 12-character password is required' });
     const hashed = await bcrypt.hash(password, 10);
     const result = await pool.query(
       'INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING id, name, email, role',
-      [name, email, hashed, role || 'user']
+      [name, email, hashed, 'worker']
     );
     const user = result.rows[0];
     const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, process.env.JWT_SECRET, { expiresIn: '24h' });

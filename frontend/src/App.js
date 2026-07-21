@@ -15,14 +15,6 @@ import CfAutonomousSafetyAudits from './pages/CfAutonomousSafetyAudits';
 import CfBehaviorBasedSafetyBbsCoaching from './pages/CfBehaviorBasedSafetyBbsCoaching';
 import CfWorkerCohortAnalysis from './pages/CfWorkerCohortAnalysis';
 import CfInsurancePremiumOptimization from './pages/CfInsurancePremiumOptimization';
-import GapProximityFallsLackDedicatedAiEndpointsForCollisionPr from './pages/GapProximityFallsLackDedicatedAiEndpointsForCollisionPr';
-import GapMaintenanceLacksPredictiveMaintenanceSchedulingAi from './pages/GapMaintenanceLacksPredictiveMaintenanceSchedulingAi';
-import GapHazardsPpeLackAiRiskScoring from './pages/GapHazardsPpeLackAiRiskScoring';
-import GapLimitedIntegrationWithWearableApisAppleWatchFitbitOu from './pages/GapLimitedIntegrationWithWearableApisAppleWatchFitbitOu';
-import GapNoGeofencedSiteMapManagement from './pages/GapNoGeofencedSiteMapManagement';
-import GapNoInsuranceLiabilityTrackingOrClaimsModule from './pages/GapNoInsuranceLiabilityTrackingOrClaimsModule';
-import GapNoWebhooksForSensorPushes from './pages/GapNoWebhooksForSensorPushes';
-import GapNoPaymentBillingModule from './pages/GapNoPaymentBillingModule';
 import CustomViewsPage from './pages/CustomViewsPage';
 
 import CodexCustomVizFeature from './pages/CodexCustomVizFeature';
@@ -476,14 +468,6 @@ function App() {
         <Route path="/cf/behavior-based-safety-bbs-coaching" element={<CfBehaviorBasedSafetyBbsCoaching />} />
         <Route path="/cf/worker-cohort-analysis" element={<CfWorkerCohortAnalysis />} />
         <Route path="/cf/insurance-premium-optimization" element={<CfInsurancePremiumOptimization />} />
-        <Route path="/gap/proximity-falls-lack-dedicated-ai-endpoints-for-collision-pr" element={<GapProximityFallsLackDedicatedAiEndpointsForCollisionPr />} />
-        <Route path="/gap/maintenance-lacks-predictive-maintenance-scheduling-ai" element={<GapMaintenanceLacksPredictiveMaintenanceSchedulingAi />} />
-        <Route path="/gap/hazards-ppe-lack-ai-risk-scoring" element={<GapHazardsPpeLackAiRiskScoring />} />
-        <Route path="/gap/limited-integration-with-wearable-apis-apple-watch-fitbit-ou" element={<GapLimitedIntegrationWithWearableApisAppleWatchFitbitOu />} />
-        <Route path="/gap/no-geofenced-site-map-management" element={<GapNoGeofencedSiteMapManagement />} />
-        <Route path="/gap/no-insurance-liability-tracking-or-claims-module" element={<GapNoInsuranceLiabilityTrackingOrClaimsModule />} />
-        <Route path="/gap/no-webhooks-for-sensor-pushes" element={<GapNoWebhooksForSensorPushes />} />
-        <Route path="/gap/no-payment-billing-module" element={<GapNoPaymentBillingModule />} />
       </Routes>
     </BrowserRouter>
   );
