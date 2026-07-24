@@ -4,11 +4,11 @@ const auth = require('../middleware/auth');
 const { aiRateLimiter } = require('../middleware/rateLimiter');
 
 const SYSTEM_PROMPT = 'You are an expert construction safety analyst specializing in wearable sensor data, OSHA compliance, and worker health monitoring.';
-const MODEL = 'anthropic/claude-3-5-sonnet-20241022';
+const MODEL = process.env.OPENROUTER_MODEL || 'anthropic/claude-3-5-sonnet-20241022';
 
 async function callOpenRouter(userMessage) {
   const response = await axios.post(
-    'https://openrouter.ai/api/v1/chat/completions',
+    `${(process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1').replace(/\/$/, '')}/chat/completions`,
     {
       model: MODEL,
       messages: [
