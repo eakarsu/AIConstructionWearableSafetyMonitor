@@ -10,10 +10,15 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleDemo = () => {
-    setEmail(process.env.REACT_APP_DEMO_EMAIL || '');
-    setPassword(process.env.REACT_APP_DEMO_PASSWORD || '');
+  const handleDemo = async () => {
     setError('');
+    try {
+      const response = await api.get('/auth/demo-credentials');
+      setEmail(response.data.email);
+      setPassword(response.data.password);
+    } catch (err) {
+      setError(err.response?.data?.error || 'Demo credentials are unavailable');
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -68,8 +73,8 @@ function Login() {
           </button>
         </form>
 
-        <button className="login-demo-btn" onClick={handleDemo}>
-          {'\u26A1'} Auto-fill Demo Credentials
+        <button className="login-demo-btn" onClick={handleDemo} aria-label="Auto Fill Demo Credentials">
+          Auto Fill Demo Credentials
         </button>
 
         <div className="login-features">
