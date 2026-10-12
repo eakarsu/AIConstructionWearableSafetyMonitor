@@ -1,3 +1,4 @@
+import NativeAIControls from "../components/NativeAIControls.jsx";
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import AIOutput from '../components/AIOutput';
@@ -278,8 +279,8 @@ function AICenter() {
               </button>
 
               {activePanel === feature.id && (
-                <div className="ai-panel">
-                  <textarea
+                <div className="ai-panel"><NativeAIControls busy={loadingFeature === feature.id} context={feature.title}>
+                  <textarea data-ai-field={"inputText"}
                     className="ai-panel-input"
                     placeholder="Optional: Add context or specific parameters for the analysis..."
                     value={inputText}
@@ -299,7 +300,7 @@ function AICenter() {
                       loading={loadingFeature === feature.id}
                     />
                   )}
-                </div>
+                </NativeAIControls></div>
               )}
             </div>
           ))}
@@ -317,10 +318,13 @@ function AICenter() {
               </div>
             )}
             {chatMessages.map((msg, idx) => (
-              <div key={idx} className={`ai-chat-message ${msg.role}`}>
-                {msg.role === 'user' ? '\u{1F464} ' : '\u{1F916} '}
-                {msg.content}
-              </div>
+              msg.role === 'assistant' ? (
+                <AIOutput key={idx} data={msg.content} title="AI Safety Assistant" />
+              ) : (
+                <div key={idx} className="ai-chat-message user">
+                  {'\u{1F464} '}{msg.content}
+                </div>
+              )
             ))}
             {chatLoading && (
               <div className="ai-chat-message assistant" style={{ opacity: 0.6 }}>
@@ -328,8 +332,8 @@ function AICenter() {
               </div>
             )}
           </div>
-          <div className="ai-chat-input-area">
-            <input
+          <div className="ai-chat-input-area"><NativeAIControls busy={chatLoading} context="Safety chat">
+            <input data-ai-field={"chatInput"}
               className="ai-chat-input"
               type="text"
               placeholder="Ask the AI Safety Assistant anything..."
@@ -344,7 +348,7 @@ function AICenter() {
             >
               Send
             </button>
-          </div>
+          </NativeAIControls></div>
         </div>
       </div>
     </div>

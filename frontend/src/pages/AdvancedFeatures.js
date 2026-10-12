@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import AIOutput from '../components/AIOutput';
+import NativeAIControls from '../components/NativeAIControls';
 import api from '../services/api';
 import './AICenter.css';
 
@@ -259,8 +260,9 @@ function AdvancedFeatures() {
                       )}
                     </div>
                   ) : feature.type === 'evacuation' ? (
-                    <>
+                    <NativeAIControls busy={loadingFeature === feature.id} context={feature.title}>
                       <input
+                        data-ai-field="incident_type"
                         className="ai-panel-input"
                         style={{ minHeight: 0 }}
                         placeholder="Incident type (e.g. Fire, Structural Collapse)"
@@ -268,6 +270,7 @@ function AdvancedFeatures() {
                         onChange={e => updateInput(feature.id, 'incident_type', e.target.value)}
                       />
                       <input
+                        data-ai-field="worker_locations"
                         className="ai-panel-input"
                         style={{ minHeight: 0 }}
                         placeholder="Worker zones, comma separated (e.g. Zone A, Zone B, Zone C)"
@@ -281,10 +284,12 @@ function AdvancedFeatures() {
                       >
                         {loadingFeature === feature.id ? 'Generating...' : '\u{1F6A8} Generate Evacuation Plan'}
                       </button>
-                    </>
+                    </NativeAIControls>
                   ) : feature.type === 'incident-prediction' ? (
-                    <>
+                    <NativeAIControls busy={loadingFeature === feature.id} context={feature.title}>
                       <input
+                        data-ai-field="site_id"
+                        data-ai-example="SITE-DEMO-001"
                         className="ai-panel-input"
                         style={{ minHeight: 0 }}
                         placeholder="Site ID (e.g. SITE-001)"
@@ -292,6 +297,7 @@ function AdvancedFeatures() {
                         onChange={e => updateInput(feature.id, 'site_id', e.target.value)}
                       />
                       <input
+                        data-ai-field="recent_weather"
                         className="ai-panel-input"
                         style={{ minHeight: 0 }}
                         placeholder="Recent weather (e.g. Hot, 95F, low humidity)"
@@ -299,6 +305,7 @@ function AdvancedFeatures() {
                         onChange={e => updateInput(feature.id, 'recent_weather', e.target.value)}
                       />
                       <input
+                        data-ai-field="worker_fatigue_levels"
                         className="ai-panel-input"
                         style={{ minHeight: 0 }}
                         placeholder="Fatigue scores comma-sep (e.g. 65,72,88,45)"
@@ -306,6 +313,7 @@ function AdvancedFeatures() {
                         onChange={e => updateInput(feature.id, 'worker_fatigue_levels', e.target.value)}
                       />
                       <textarea
+                        data-ai-field="active_hazards"
                         className="ai-panel-input"
                         placeholder="Active hazards (comma separated)"
                         value={inputs[feature.id]?.active_hazards || ''}
@@ -318,7 +326,7 @@ function AdvancedFeatures() {
                       >
                         {loadingFeature === feature.id ? 'Simulating...' : '\u{1F3AE} Run Simulation'}
                       </button>
-                    </>
+                    </NativeAIControls>
                   ) : feature.type === 'report' ? (
                     <button
                       className="ai-panel-submit"
@@ -328,8 +336,9 @@ function AdvancedFeatures() {
                       {loadingFeature === feature.id ? 'Loading...' : '\u{1F4CA} Refresh Trends'}
                     </button>
                   ) : (
-                    <>
+                    <NativeAIControls busy={loadingFeature === feature.id} context={feature.title}>
                       <textarea
+                        data-ai-field="context"
                         className="ai-panel-input"
                         placeholder={feature.promptHint || 'Optional: provide context for the AI...'}
                         value={inputs[feature.id]?.context || ''}
@@ -342,7 +351,7 @@ function AdvancedFeatures() {
                       >
                         {loadingFeature === feature.id ? 'Analyzing...' : '\u{1F916} Run Analysis'}
                       </button>
-                    </>
+                    </NativeAIControls>
                   )}
 
                   {(results[feature.id] || loadingFeature === feature.id) && feature.type !== 'leaderboard' && (

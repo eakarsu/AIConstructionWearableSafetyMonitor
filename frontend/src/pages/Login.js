@@ -1,32 +1,46 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import './Login.css';
 
 function Login() {
+  const demoLoginLock = useRef(false);
+  const [demoLoginBusy, setDemoLoginBusy] = useState(false);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleDemo = async () => {
+  const handleDemoLogin = async (event) => {
+    event.preventDefault();
+    if (demoLoginLock.current) return;
+    demoLoginLock.current = true;
+    setDemoLoginBusy(true);
     setError('');
     try {
-      const response = await api.get('/auth/demo-credentials');
-      setEmail(response.data.email);
-      setPassword(response.data.password);
+      const credentials = await api.get('/auth/demo-credentials');
+      const demoEmail = credentials.data?.email;
+      const demoPassword = credentials.data?.password;
+      if (!demoEmail || !demoPassword) throw new Error('Demo credentials are unavailable');
+      setEmail(demoEmail);
+      setPassword(demoPassword);
+      await handleSubmit(event, { email: demoEmail, password: demoPassword });
     } catch (err) {
-      setError(err.response?.data?.error || 'Demo credentials are unavailable');
+      setError(err.response?.data?.error || err.response?.data?.message || err.message || 'Demo login failed.');
+    } finally {
+      demoLoginLock.current = false;
+      setDemoLoginBusy(false);
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, demoLoginCredentials) => {
     e.preventDefault();
     setError('');
     setLoading(true);
     try {
-      const res = await api.post('/auth/login', { email, password });
+      const res = await api.post('/auth/login', { email: (demoLoginCredentials?.email ?? email), password: (demoLoginCredentials?.password ?? password) });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       navigate('/');
@@ -73,8 +87,14 @@ function Login() {
           </button>
         </form>
 
-        <button className="login-demo-btn" onClick={handleDemo} aria-label="Auto Fill Demo Credentials">
-          Auto Fill Demo Credentials
+        <button
+          type="button"
+          disabled={demoLoginBusy || loading}
+          className="login-demo-btn"
+          onClick={handleDemoLogin}
+          aria-label="Log In as Demo"
+        >
+          {demoLoginBusy ? 'Logging In as Demo...' : 'Log In as Demo'}
         </button>
 
         <div className="login-features">

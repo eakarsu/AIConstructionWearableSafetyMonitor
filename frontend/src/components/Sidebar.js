@@ -1,3 +1,4 @@
+import AIReportLibrary from "./AIReportLibrary";
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './Sidebar.css';
@@ -30,7 +31,6 @@ const navItems = [
   { path: '/advanced', label: 'Advanced Suite', icon: '\u{1F680}' },
   { section: 'Custom Views' },
   { path: '/custom-views', label: 'Wearable Views', icon: '\u{1F4CA}' },
-,
   // // === Batch 02 Gaps & Frontend Mounts ===
   { path: '/cf/multi-modal-fatigue-detection', icon: '+', label: 'CF: MultiModalFatigueDetecti' },
   { path: '/cf/predictive-injury-prevention', icon: '+', label: 'CF: PredictiveInjuryPreventi' },
@@ -102,7 +102,7 @@ function Sidebar() {
             {'\u23FB'} Sign Out
           </button>
         </div>
-      </aside>
+      <AIReportLibrary /></aside>
     </>
   );
 }
