@@ -76,6 +76,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // Custom Views (Wearable Views) - mounted before any 404/fallback handlers
+app.use('/api/feature-pack', require('./routes/featurePack'));
 app.use('/api/custom-views', require('./routes/customViews'));
 
 // Global error handler

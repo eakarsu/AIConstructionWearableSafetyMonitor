@@ -191,7 +191,7 @@ function DetailModal({ item, endpoint, onEdit, onDelete, onClose }) {
 
   return (
     <div style={styles.overlay} onClick={onClose}>
-      <div style={styles.modal} onClick={e => e.stopPropagation()}>
+      <div style={styles.modal} role="dialog" aria-modal="true" onClick={e => e.stopPropagation()}>
         <div style={styles.header}>
           <span style={styles.title}>
             {item.name || item.title || item.worker_name || item.equipment_name || item.type || item.zone || 'Detail View'}
@@ -219,6 +219,9 @@ function DetailModal({ item, endpoint, onEdit, onDelete, onClose }) {
           </button>
           <button style={styles.deleteBtn} onClick={onDelete}>
             {'\u{1F5D1}'} Delete
+          </button>
+          <button style={styles.editBtn} onClick={onClose}>
+            Cancel
           </button>
           <button style={styles.aiBtn} onClick={handleAnalyze} disabled={aiLoading}>
             {'\u{1F916}'} AI Analyze
